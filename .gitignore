@@ -223,4 +223,7 @@ __marimo__/
 .vscode
 
 #Tensorboard
-runs 
+runs
+
+#log
+.logs
