@@ -7,15 +7,15 @@ import torch.optim as optim
 if __package__:
     from . import config
     from . import utils
-    from .utils import EColor
-    from .config import logger
     from .tmlp import TMLP, TMLPLoss
+    from .log import LODNMLogger
 else:
     import config
     import utils
-    from utils import EColor
-    from config import logger
     from tmlp import TMLP, TMLPLoss
+    from log import LODNMLogger
+
+
 
 class Trainer:
     def __init__(self, 
@@ -63,6 +63,7 @@ class Trainer:
         assert(self.mesh_points.shape[0] == self.mesh_subdiv.shape[0])
 
         batches_per_epoch = (self.mesh_points.shape[0] + self.batch - 1) // self.batch
+        #to-do: change eval_frequency computation
         eval_frequency = max(1, math.ceil(batches_per_epoch * 0.25))
         tot_steps = self.epoches * batches_per_epoch 
         step = 1
@@ -123,10 +124,9 @@ if __name__ == '__main__':
     #parser.add_argument('--steps_til_summary', type=int, default=1000, help='epoch frequency to update tensorboard summary')
 
     args = parser.parse_args()
-
-    args = parser.parse_args()
+    logger = LODNMLogger(__name__)
     logger.info('start')
-    logger.debug('Checking the accelerator device')
+    logger.debug('Checking the accelerator device', destination='both')
     device = None
     accelerator = torch.accelerator.current_accelerator()
     if accelerator is None:

@@ -1,5 +1,3 @@
-from config import logger
-
 import torch
 from torch import nn, Tensor
 import copy
@@ -47,7 +45,6 @@ class TMLP(nn.Module):
                  dropout=0.0):
         super().__init__()
 
-        logger.debug("TLMP initialization")
         self.out_features = out_features
         self.first_layer_init = None
         self.poly = 2
@@ -58,10 +55,6 @@ class TMLP(nn.Module):
         hidden_features = []
         for _ in range(num_hidden_layers + 1):
             hidden_features.append(num_hidden_features)
-
-        logger.debug(f'num layers: {len(hidden_features)}')
-        logger.debug(f'net size: {hidden_features}')
-
         #net
         #activation function sine
         nl = Sine()
